@@ -1,7 +1,20 @@
-:- dynamic node/3.
+:- dynamic kb/1.
 
-node(q("Is it a mammal?"), q("Does it have stripes?"), q("Is it a bird?")).
-node(q("Does it have stripes?"), a("Zebra"), a("Lion")).
-node(q("Is it a bird?"), q("Does it fly?"), a("Lizard")).
-node(q("Does it fly?"), a("Eagle"), a("Penguin")).
+kb(T) :- T = tree(
+	"Is it a mammal?",
+	tree(
+		"Does it have stripes?",
+		a("Zebra"),
+		a("Lion")
+	),
+	tree(
+		"Is it a bird?",
+		tree(
+			"Does it fly?",
+			a("Eagle"),
+			a("Penguin")
+		),
+		a("Lizard")
+	)
+).
 

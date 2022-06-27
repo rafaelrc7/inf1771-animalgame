@@ -1,9 +1,0 @@
-:- dynamic node/3.
-
-node(q("Is it a mammal?"), q("Does it have stripes?"), q("Is it a bird?")).
-node(q("Is it a bird?"), q("Does it fly?"), a("Lizard")).
-node(q("Does it have stripes?"), q("Does it eat meat?"), a("Lion")).
-node(q("Does it eat meat?"), a("Tiger"), a("Zebra")).
-node(q("Does it fly?"), q("Does it hunt?"), a("Penguin")).
-node(q("Does it hunt?"), a("Eagle"), a("Woodpecker")).
-
