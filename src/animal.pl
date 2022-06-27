@@ -13,21 +13,22 @@ save_kb :- query_yn("Do you want to save?" , IN)
 				; save_kb.
 
 % Runs game, starting with the first node question.
-start :- load_kb , kb(T) , play(T) , !.
+start :- load_kb , play , !.
 
 % Game loop, runs until player chooses to exit.
-play(T) :- ask_node(T, TN)
-			, (TN \= void -> retractall(kb(_)) , assert(kb(TN)) ; true)
-			, query_yn("Do you want to play again?", IN)
-			, ((IN = 'y' , nl , kb(TC) , play(TC))
-				; (IN = 'n' , save_kb , format("~nThanks for playing!~n"))).
+play :- kb(T)
+		, ask_node(T, TN)
+		, (TN \= void -> retractall(kb(_)) , assert(kb(TN)) ; true)
+		, query_yn("Do you want to play again?", IN)
+		, ((IN = 'y' , nl , play)
+			; (IN = 'n' , save_kb , format("~nThanks for playing!~n"))).
 
 qInsert(a(A), AN, Q, ANS, T) :- (ANS = y) -> (T = tree(Q, AN, a(A)))
 												; (T = tree(Q, a(A), AN)).
 
 ask_node(tree(Q, Y, N), T) :- query_yn(Q, IN)
-	, ((IN = 'y') -> (ask_node(Y, YN)
-						, (YN \= void -> T = tree(Q, YN, N) ; T = void))
+	, ((IN = 'y') ->
+			(ask_node(Y, YN) , (YN \= void -> T = tree(Q, YN, N) ; T = void))
 		; (ask_node(N, NN) , (NN \= void -> T = tree(Q, Y, NN) ; T = void))).
 
 ask_node(a(A), N) :- string_concat("Is it the ", A, Q) , query_yn(Q, IN)
